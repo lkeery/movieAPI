@@ -14,9 +14,20 @@ class Movie
 
     public function getMovies()
     {
-        $query = 'SELECT * FROM ' .$this->movie_table;
-        
-        
+        // Update query so that returning data
+        //$query = 'SELECT * FROM ' .$this->movie_table;
+
+        $query = 'SELECT
+        m.*,
+        GROUP_CONCAT(g.genre_name) AS genre_name
+    FROM
+        ' . $this->movie_table . ' m
+    LEFT JOIN ' . $this->movie_genre_linking_table . ' link ON
+        link.movies_id = m.movies_id
+    LEFT JOIN ' . $this->genre_table . ' g ON
+        link.genre_id = g.genre_id
+    GROUP BY
+        m.movies_id';
 
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
@@ -24,4 +35,3 @@ class Movie
         return $stmt;
     }
 }
-?>
