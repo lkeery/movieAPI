@@ -11,6 +11,16 @@ class Movie
     {
         $this->conn = $db;
     }
+    
+    public function getMovieByID($id) {
+        //TODO: SQL query to fetch movies based on the id
+        $query = 'SELECT * FROM tbl_movies WHERE movies_id = '.$id;
+    
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+    
+        return $stmt;
+    }
 
     public function getMovies()
     {
